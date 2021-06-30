@@ -18,9 +18,6 @@ public class Seat {
     private Long id;
 
     @NotNull
-    private Integer seatRow;
-
-    @NotNull
     private Integer seatCol;
 
     @NotNull
