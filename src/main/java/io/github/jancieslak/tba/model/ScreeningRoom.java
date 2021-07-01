@@ -19,10 +19,12 @@ public class ScreeningRoom {
     @OneToMany(mappedBy = "screeningRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Screening> screenings = new HashSet<>();
 
     @OneToMany(mappedBy = "screeningRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<ScreeningRoomRow> rows = new HashSet<>();
 }

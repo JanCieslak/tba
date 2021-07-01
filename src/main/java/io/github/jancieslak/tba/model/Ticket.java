@@ -20,5 +20,6 @@ public class Ticket {
     @ManyToOne()
     @JoinColumn(name = "reservation_id")
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     Reservation reservation;
 }

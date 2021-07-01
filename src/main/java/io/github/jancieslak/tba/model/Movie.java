@@ -25,5 +25,6 @@ public class Movie {
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Screening> screenings = new HashSet<>();
 }

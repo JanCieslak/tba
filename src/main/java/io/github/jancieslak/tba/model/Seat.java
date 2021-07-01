@@ -26,10 +26,12 @@ public class Seat {
     @ManyToOne()
     @JoinColumn(name = "screening_room_row_id")
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private ScreeningRoomRow row;
 
     @OneToMany(mappedBy = "seat", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<ReservedSeat> reservedSeats = new HashSet<>();
 }

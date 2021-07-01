@@ -29,10 +29,12 @@ public class Reservation {
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<ReservedSeat> reservedSeats = new HashSet<>();
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Ticket> tickets = new HashSet<>();
 }

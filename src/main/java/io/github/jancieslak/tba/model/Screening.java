@@ -25,10 +25,12 @@ public class Screening {
     @ManyToOne()
     @JoinColumn(name = "movie_id")
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Movie movie;
 
     @ManyToOne()
     @JoinColumn(name = "screening_room_id")
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private ScreeningRoom screeningRoom;
 }
