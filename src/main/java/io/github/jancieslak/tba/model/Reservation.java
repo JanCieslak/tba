@@ -26,6 +26,12 @@ public class Reservation {
     @NotBlank(message = "Reservation: lastname should not be blank")
     private String lastname;
 
+    @ManyToOne()
+    @JoinColumn(name = "screening_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Screening screening;
+
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @EqualsAndHashCode.Exclude

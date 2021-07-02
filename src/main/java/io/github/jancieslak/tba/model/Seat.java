@@ -20,9 +20,6 @@ public class Seat {
     @NotNull
     private Integer seatCol;
 
-    @NotNull
-    private Boolean available;
-
     @ManyToOne()
     @JoinColumn(name = "screening_room_row_id")
     @EqualsAndHashCode.Exclude

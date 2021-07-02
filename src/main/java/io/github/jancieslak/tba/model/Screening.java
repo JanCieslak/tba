@@ -5,6 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -21,6 +23,12 @@ public class Screening {
 
     @NotNull
     private LocalDateTime toDateTime;
+
+    @OneToMany(mappedBy = "screening")
+    @Builder.Default
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Set<Reservation> reservations = new HashSet<>();
 
     @ManyToOne()
     @JoinColumn(name = "movie_id")
