@@ -8,6 +8,7 @@ delete from movie;
 
 insert into movie (id, title) values (0, 'Batman');
 insert into movie (id, title) values (1, 'Jaws');
+insert into movie (id, title) values (2, 'Zażółć gęślą jaźń');
 
 insert into screening_room (id) values (0);
 

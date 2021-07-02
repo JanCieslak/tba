@@ -18,7 +18,4 @@ public interface ScreeningRepository extends JpaRepository<Screening, Long> {
     List<Screening> findByDateTimeInterval(@Param("beginFrom") LocalDateTime from, @Param("beginTo") LocalDateTime to);
 
     Optional<Screening> findByFromDateTimeAndMovieTitle(LocalDateTime from, String title);
-
-//    @Query("from Screening s join s.movie m where s.fromDateTime = :from and m.title = :title")
-//    Optional<Screening> findByFromDateTimeAndMovieTitle(LocalDateTime from, String title);
 }
