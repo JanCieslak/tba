@@ -9,6 +9,7 @@ import io.github.jancieslak.tba.repository.ReservationRepository;
 import io.github.jancieslak.tba.repository.ScreeningRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +28,10 @@ public class ReservationService {
                 .reduce(0f, Float::sum);
 
         var screening = screeningRepository.getById(request.getScreeningId());
+
+        if (LocalDateTime.now().plusMinutes(15).isAfter(screening.getFromDateTime())) {
+            return null;
+        }
 
         var tickets = request.getSeats().stream()
                 .map(seat -> Ticket.builder().ticketType(seat.getTicketType()).build())

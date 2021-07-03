@@ -35,6 +35,8 @@ public class ScreeningService {
             response.add(new GetScreeningsResponseModel(screening.getMovie().getTitle(), screening.getFromDateTime(), screening.getToDateTime()));
         }
 
+        response.sort(Comparator.comparing(GetScreeningsResponseModel::getTitle).thenComparing(GetScreeningsResponseModel::getFrom));
+
         return response;
     }
 

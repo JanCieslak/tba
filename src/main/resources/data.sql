@@ -1,3 +1,4 @@
+delete from ticket;
 delete from reserved_seat;
 delete from reservation;
 delete from screening;

@@ -20,6 +20,10 @@ public class ReservationController {
 
     @PostMapping("/reservation")
     ResponseEntity<PostReserveScreeningResponseModel> reserveScreening(@RequestBody @Valid PostReserveScreeningRequestModel request) {
-        return ResponseEntity.ok(reservationService.reserveScreening(request));
+        var response = reservationService.reserveScreening(request);
+        if (response == null) {
+            return ResponseEntity.badRequest(). build();
+        }
+        return ResponseEntity.ok(response);
     }
 }
