@@ -4,6 +4,8 @@ import io.github.jancieslak.tba.dto.PostReserveScreeningRequestModel;
 import io.github.jancieslak.tba.dto.PostReserveScreeningResponseModel;
 import io.github.jancieslak.tba.dto.SeatReservationModel;
 import io.github.jancieslak.tba.model.Reservation;
+import io.github.jancieslak.tba.model.ReservedSeat;
+import io.github.jancieslak.tba.model.Screening;
 import io.github.jancieslak.tba.model.Ticket;
 import io.github.jancieslak.tba.repository.*;
 import org.springframework.stereotype.Service;
@@ -35,29 +37,11 @@ public class ReservationService {
         this.screeningRoomRepository = screeningRoomRepository;
     }
 
-    public PostReserveScreeningResponseModel reserveScreening(PostReserveScreeningRequestModel request) {
-        if (!FIRSTNAME_PATTERN.matcher(request.getFirstname()).matches() ||
-                !LASTNAME_PATTERN.matcher(request.getLastname()).matches() ||
-                request.getSeats().size() == 0) {
-            return null;
-        }
-
-        var screening = screeningRepository.getById(request.getScreeningId());
-
-        if (LocalDateTime.now().plusMinutes(15).isAfter(screening.getFromDateTime())) {
-            System.out.println("Too late");
-            return null;
-        }
-
-        var tickets = request.getSeats().stream()
-                .map(seat -> Ticket.builder().ticketType(seat.getTicketType()).build())
-                .collect(Collectors.toList());
-
-        var reservedSeats = reservedSeatsRepository.findAllByReservationScreeningId(screening.getId());
-
-        // Check for single place between already reserved seats
+    // Check for single place between already reserved seats
+    // If there is such place the seats placement is not valid otherwise it's valid
+    public boolean hasValidSeatsPlacement(Set<SeatReservationModel> seats, Set<ReservedSeat> reservedSeats, Screening screening) {
         // Get request seats columns grouped by row
-        var partitionedRequestSeats = request.getSeats().stream()
+        var partitionedRequestSeats = seats.stream()
                 .collect(Collectors.groupingBy(SeatReservationModel::getRow));
 
         // Get reserved seats columns filtered by request seats rows
@@ -68,7 +52,7 @@ public class ReservationService {
         var screeningRoomOption = screeningRoomRepository.findScreeningRoomByScreeningId(screening.getId());
 
         if (screeningRoomOption.isEmpty()) {
-            return null;
+            return false;
         }
 
         var screeningRoom = screeningRoomOption.get();
@@ -114,10 +98,36 @@ public class ReservationService {
 
                 // There is a single place left between two reserved/requested seats
                 if (!value && prevValue && nextValue) {
-                    return null;
+                    return false;
                 }
             }
         }
+
+        return true;
+    }
+
+    public PostReserveScreeningResponseModel reserveScreening(PostReserveScreeningRequestModel request) {
+        if (!FIRSTNAME_PATTERN.matcher(request.getFirstname()).matches() ||
+                !LASTNAME_PATTERN.matcher(request.getLastname()).matches() ||
+                request.getSeats().size() == 0) {
+            return null;
+        }
+
+        var screening = screeningRepository.getById(request.getScreeningId());
+
+        if (LocalDateTime.now().plusMinutes(15).isAfter(screening.getFromDateTime())) {
+            return null;
+        }
+
+        var reservedSeats = reservedSeatsRepository.findAllByReservationScreeningId(screening.getId());
+
+        if (!hasValidSeatsPlacement(request.getSeats(), reservedSeats, screening)) {
+            return null;
+        }
+
+        var tickets = request.getSeats().stream()
+                .map(seat -> Ticket.builder().ticketType(seat.getTicketType()).build())
+                .collect(Collectors.toList());
 
         var reservation = Reservation.builder()
                 .reservedSeats(reservedSeats)

@@ -28,16 +28,10 @@ public class ScreeningService {
             return null;
         }
 
-        var response = new ArrayList<GetScreeningsResponseModel>();
-        var result = screeningRepository.findByDateTimeInterval(request.getBeginFrom(), request.getBeginTo());
-
-        for (var screening : result) {
-            response.add(new GetScreeningsResponseModel(screening.getMovie().getTitle(), screening.getFromDateTime(), screening.getToDateTime()));
-        }
-
-        response.sort(Comparator.comparing(GetScreeningsResponseModel::getTitle).thenComparing(GetScreeningsResponseModel::getFrom));
-
-        return response;
+        return screeningRepository.findByDateTimeInterval(request.getBeginFrom(), request.getBeginTo()).stream()
+                .map(screening -> new GetScreeningsResponseModel(screening.getMovie().getTitle(), screening.getFromDateTime(), screening.getToDateTime()))
+                .sorted(Comparator.comparing(GetScreeningsResponseModel::getTitle).thenComparing(GetScreeningsResponseModel::getFrom))
+                .collect(Collectors.toList());
     }
 
     public GetScreeningSeatsResponseModel getScreeningSeats(GetScreeningSeatsRequestModel request) {
