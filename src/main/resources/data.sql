@@ -13,9 +13,9 @@ insert into movie (id, title) values (2, 'Zażółć gęślą jaźń');
 
 insert into screening_room (id) values (0);
 
-insert into screening (id, screening_room_id, movie_id, from_date_time, to_date_time) values (0, 0, 0, '2021-06-30 8:00:00', '2021-06-30 9:30:00');
-insert into screening (id, screening_room_id, movie_id, from_date_time, to_date_time) values (1, 0, 0, '2021-06-30 10:00:00', '2021-06-30 11:30:00');
-insert into screening (id, screening_room_id, movie_id, from_date_time, to_date_time) values (2, 0, 1, '2021-06-30 12:00:00', '2021-06-30 13:00:00');
+insert into screening (id, screening_room_id, movie_id, from_date_time, to_date_time) values (0, 0, 0, '2021-07-30 8:00:00', '2021-07-30 9:30:00');
+insert into screening (id, screening_room_id, movie_id, from_date_time, to_date_time) values (1, 0, 0, '2021-07-30 10:00:00', '2021-07-30 11:30:00');
+insert into screening (id, screening_room_id, movie_id, from_date_time, to_date_time) values (2, 0, 1, '2021-07-30 12:00:00', '2021-07-30 13:00:00');
 
 -- Room 0 setup
 -- [o-o-o-o]
