@@ -24,7 +24,7 @@ public class ScreeningService {
     }
 
     public List<GetScreeningsResponseModel> getScreeningsInInterval(GetScreeningsRequestModel request) {
-        if (!isSameDate(request.getBeginFrom(), request.getBeginTo())) {
+        if (!isSameDate(request.getBeginFrom(), request.getBeginTo()) || !request.getBeginFrom().isBefore(request.getBeginTo())) {
             return null;
         }
 
@@ -49,7 +49,7 @@ public class ScreeningService {
         }
 
         var screeningRoom = screeningRoomOption.get();
-        var reservedSeats = seatRepository.findReservedSeatsByScreeningId(screening.getId());
+        var reservedSeats = seatRepository.findIdsByReservedSeatsAndScreeningId(screening.getId());
 
         var seats = screeningRoom.getRows().stream()
                 .flatMap(row -> row.getSeats().stream())
